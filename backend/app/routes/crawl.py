@@ -7,3 +7,5 @@ router = APIRouter()
 @router.get("/search")
 def search(keyword: str = Query(...), size: int = Query(10, ge=1)):
     return get_google_news_articles(keyword, size)
+
+print('push 테스트')
