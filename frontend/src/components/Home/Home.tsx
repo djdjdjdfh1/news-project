@@ -1,22 +1,20 @@
+import { Link } from "react-router-dom";
+
 function Home() {
   return (
     <main className="flex flex-col items-center justify-start min-h-screen">
-      <nav className="fixed top-0 left-0 w-full z-50 border-b border-deepnavy bg-white">
-        <div className="max-w-3xl w-screen px-52 flex justify-start">
-          <img src="/news_logo.png" alt="NEWS 로고" className="h-14 w-36" />
-          {/* <span className="text-3xl text-red-500 font-bold">NEWS</span> */}
-        </div>
-      </nav>
-      <div className="h-20" />
       <div className="w-full px-52 flex flex-col items-center">
         <section className="border-b border-deepnavy p-2 flex items-center gap-2 mb-8 w-full max-w-3xl mx-auto">
           <input
             type="text"
             className="flex-1 border rounded px-2 py-1 bg-transparent border-none"
           />
-          <button className="bg-deepnavy text-white px-6 py-2 rounded">
+          <Link
+            to="/search"
+            className="bg-deepnavy text-white px-6 py-2 rounded flex items-center justify-center"
+          >
             검색
-          </button>
+          </Link>
         </section>
         <section
           className="flex flex-wrap gap-2 mb-8"
