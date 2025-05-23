@@ -1,73 +1,61 @@
-import { useEffect, useState } from "react";
-
-type Article = {
-  image?: string;
-  published?: string;
-  title?: string;
-  description?: string;
-  link?: string;
-};
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
-  const [keyword, setKeyword] = useState("프론트엔드");
-  const [articles, setArticles] = useState<Article[]>([]);
+  const [keyword, setKeyword] = useState("");
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    fetch(`http://localhost:8000/search?keyword=${keyword}&size=9`)
-      .then((res) => res.json())
-      .then((data) => {
-        setArticles(data);
-      })
-      .catch((error) => {
-        console.error("뉴스 불러오기 실패:", error);
-      });
-  }, [keyword]);
+  const recommendedKeywords = [
+    "프론트엔드",
+    "인공지능",
+    "IT",
+    "경제",
+    "사회",
+    "정치",
+    "문화",
+    "스포츠",
+  ];
+
+  const handleSearch = () => {
+    if (!keyword.trim()) return;
+    navigate(`/search?keyword=${encodeURIComponent(keyword.trim())}`);
+  };
 
   return (
-    <main className="flex flex-col items-center justify-start min-h-screen">
-      <div className="w-full px-52 flex flex-col items-center">
-        {/* 검색 영역 */}
-        <section className="border-b border-deepnavy p-2 flex items-center gap-2 mb-8 w-full max-w-3xl mx-auto">
-          <input
-            type="text"
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-            className="flex-1 border rounded px-2 py-1 bg-transparent border-gray-300"
-          />
-          <button
-            onClick={() => {
-              // keyword 값이 변경될 때마다 useEffect가 다시 실행됨
-              setKeyword(keyword.trim());
-            }}
-            className="bg-deepnavy text-white px-6 py-2 rounded flex items-center justify-center"
-          >
-            검색
-          </button>
-        </section>
+    <main className="flex flex-col items-center justify-center min-h-screen px-4">
+      {/* <img src="/news_logo.png" alt="NEWS 로고" className="h-14 w-36 mb-24" /> */}
 
-        {/* 뉴스 카드 */}
-        <section className="w-full grid grid-cols-1 md:grid-cols-3 gap-6">
-          {Array.isArray(articles) &&
-            articles.map((article, idx) => (
-              <article
-                key={idx}
-                className="border border-deepnavy p-4 rounded-lg flex flex-col items-start"
-              >
-                <img
-                  src={article.image || "/news_image.png"}
-                  alt="뉴스 이미지"
-                  className="mb-2 w-full h-40 object-cover bg-gray-100 rounded"
-                />
-                <span className="text-gray-700 text-sm">
-                  {article.published}
-                </span>
-                <h2 className="text-xl font-semibold mb-1">{article.title}</h2>
-                <p className="text-gray-700 text-sm mb-2">
-                  {article.description}
-                </p>
-              </article>
-            ))}
-        </section>
+      <section className="border-b border-deepnavy p-2 flex items-center gap-2 mb-8 w-full max-w-3xl mx-auto">
+        <input
+          type="text"
+          placeholder="검색어를 입력하세요"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          className="flex-1 bg-transparent outline-none px-2 py-1"
+        />
+        <button
+          onClick={handleSearch}
+          className="bg-deepnavy text-white px-6 py-2 rounded flex items-center justify-center"
+        >
+          검색
+        </button>
+      </section>
+
+      <div className="w-full max-w-3xl">
+        <p className="mb-3 text-lg font-medium">추천 검색어</p>
+        <div className="flex flex-wrap gap-3">
+          {recommendedKeywords.map((word, i) => (
+            <button
+              key={i}
+              onClick={() =>
+                navigate(`/search?keyword=${encodeURIComponent(word)}&size=9`)
+              }
+              className="bg-gray-300 rounded-full px-4 py-2 hover:bg-deepnavy hover:text-white transition"
+            >
+              {word}
+            </button>
+          ))}
+        </div>
       </div>
     </main>
   );
