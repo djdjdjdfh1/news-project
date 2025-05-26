@@ -6,6 +6,9 @@ module.exports = {
       colors: {
         deepnavy: "#14244C",
       },
+      fontFamily: {
+        sans: ["Pretendard", "sans-serif"],
+      },
     },
   },
   plugins: [],

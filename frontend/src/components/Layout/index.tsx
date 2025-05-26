@@ -1,12 +1,17 @@
+import { useLocation } from "react-router-dom";
 import Nav from "./Nav";
 
 function Layout({ children }: { children: React.ReactNode }) {
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+
   return (
     <>
-      <Nav />
-      <div className="h-20" /> {/* 네브 높이만큼 여백 */}
+      {!isHome && <Nav />}
+      {!isHome && <div className="h-20" />}
       {children}
     </>
   );
 }
+
 export default Layout;
