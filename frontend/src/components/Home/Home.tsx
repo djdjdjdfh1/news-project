@@ -1,21 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { v4 as uuid } from "uuid";
+import { recommendedKeywords } from "../../constants/recommendedKeywords";
 
 function Home() {
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState<string>("");
   const navigate = useNavigate();
-
-  const recommendedKeywords = [
-    "프론트엔드",
-    "인공지능",
-    "IT",
-    "경제",
-    "사회",
-    "정치",
-    "문화",
-    "스포츠",
-  ];
-
   const handleSearch = () => {
     if (!keyword.trim()) return;
     navigate(`/search?keyword=${encodeURIComponent(keyword.trim())}`);
@@ -23,8 +13,6 @@ function Home() {
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen px-4">
-      {/* <img src="/news_logo.png" alt="NEWS 로고" className="h-14 w-36 mb-24" /> */}
-
       <section className="border-b border-deepnavy p-2 flex items-center gap-2 mb-8 w-full max-w-3xl mx-auto">
         <input
           type="text"
@@ -44,9 +32,9 @@ function Home() {
       <div className="w-full max-w-3xl">
         <p className="mb-3 text-lg font-medium">추천 검색어</p>
         <div className="flex flex-wrap gap-3">
-          {recommendedKeywords.map((word, i) => (
+          {recommendedKeywords.map((word) => (
             <button
-              key={i}
+              key={uuid()}
               onClick={() =>
                 navigate(`/search?keyword=${encodeURIComponent(word)}&size=9`)
               }
