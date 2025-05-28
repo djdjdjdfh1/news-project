@@ -6,7 +6,6 @@ import { recommendedKeywords } from "../../constants/recommendedKeywords";
 function Home() {
   const [keyword, setKeyword] = useState<string>("");
   const navigate = useNavigate();
-
   const handleSearch = () => {
     if (!keyword.trim()) return;
     navigate(`/search?keyword=${encodeURIComponent(keyword.trim())}`);
