@@ -1,15 +1,35 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import { recommendedKeywords } from "../../constants/recommendedKeywords";
 
 function Home() {
+  const SEARCH_SIZE = 10;
   const [keyword, setKeyword] = useState<string>("");
   const navigate = useNavigate();
-  const handleSearch = () => {
-    if (!keyword.trim()) return;
-    navigate(`/search?keyword=${encodeURIComponent(keyword.trim())}`);
-  };
+
+  // 공통 검색 함수 추출
+  const navigateToSearch = useCallback(
+    (word: string) => {
+      const keywordValue = word.trim();
+      if (!keywordValue) return;
+      navigate(`/search?keyword=${keywordValue}&size=${SEARCH_SIZE}`);
+    },
+    [navigate]
+  );
+
+  // 검색 버튼 클릭용
+  const handleSearch = useCallback(() => {
+    navigateToSearch(keyword);
+  }, [keyword, navigateToSearch]);
+
+  // 외부에서 키워드 받는 경우
+  const onKeywordBtnClick = useCallback(
+    (word: string) => {
+      navigateToSearch(word);
+    },
+    [navigateToSearch]
+  );
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen px-4">
@@ -35,9 +55,7 @@ function Home() {
           {recommendedKeywords.map((word) => (
             <button
               key={uuid()}
-              onClick={() =>
-                navigate(`/search?keyword=${encodeURIComponent(word)}&size=9`)
-              }
+              onClick={() => onKeywordBtnClick(word)}
               className="bg-gray-300 rounded-full px-4 py-2 hover:bg-deepnavy hover:text-white transition"
             >
               {word}
